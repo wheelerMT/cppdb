@@ -2,6 +2,7 @@ cmake_minimum_required(VERSION 3.28)
 
 project(cppdb VERSION 0.1.0 LANGUAGES CXX)
 
+include(cmake/Ccache.cmake)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
 if (APPLE)
