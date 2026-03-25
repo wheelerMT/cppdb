@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.28)
 
-project(cppdp VERSION 0.1.0 LANGUAGES CXX)
+project(cppdb VERSION 0.1.0 LANGUAGES CXX)
 
 set(CMAKE_CXX_EXTENSIONS OFF)
 
