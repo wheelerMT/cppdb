@@ -8,5 +8,10 @@ if (APPLE)
     execute_process(COMMAND xcrun --show-sdk-path OUTPUT_VARIABLE CMAKE_OSX_SYSROOT OUTPUT_STRIP_TRAILING_WHITESPACE)
 endif ()
 
+enable_testing()
+include(cmake/FetchCatch2.cmake)
+
 include(cmake/CompilerWarnings.cmake)
 add_subdirectory(src)
+
+add_subdirectory(tests)
