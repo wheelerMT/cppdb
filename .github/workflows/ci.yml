@@ -59,7 +59,7 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-        
+
       - name: Install packages
         run: sudo apt-get install -y cmake ninja-build clang-18 clang-tidy-18
 
@@ -67,4 +67,4 @@ jobs:
         run: cmake --preset debug
 
       - name: Run clang-tidy
-        run: run-clang-tidy-18 -p "src/.*"
+        run: run-clang-tidy-18 -p build/debug "src/.*"
