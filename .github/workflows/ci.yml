@@ -67,4 +67,4 @@ jobs:
         run: cmake --preset debug
 
       - name: Run clang-tidy
-        run: run-clang-tidy-18 -p build/debug "src/.*"
+        run: find src -name "*.cpp" | xargs clang-tidy-18 -p build/debug
