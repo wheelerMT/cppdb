@@ -27,7 +27,7 @@ jobs:
           key: ${{ runner.os }}-cache-${{ hashFiles('**/CMakeLists.txt') }}
           restore-keys: |
             ${{ runner.os}}-ccache-
-            
+
       - name: Configure CMake
         run: cmake --preset debug
 
@@ -36,3 +36,14 @@ jobs:
 
       - name: Run tests
         run: ctest --test-dir build/debug --output-on-failure
+
+  formatting:
+    runs-on: ubuntu-24.04
+
+    steps:
+      - name: Install packages
+        run: sudo apt-get install -y clang-format-18
+
+      - name: Run clang-format
+        run: find src include -type f \( -name "*.cpp" -o -name "*.h" \) \
+          | xargs clang-format-18 --dry-run --Werror
