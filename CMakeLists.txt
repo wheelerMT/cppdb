@@ -12,6 +12,8 @@ endif ()
 enable_testing()
 include(cmake/FetchCatch2.cmake)
 
+include_directories(include)
+
 include(cmake/CompilerWarnings.cmake)
 add_subdirectory(src)
 
