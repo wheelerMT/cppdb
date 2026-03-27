@@ -19,7 +19,7 @@ TEST_CASE("Page can be written to and read from", "[page]") {
     Page page{0};
 
     SECTION("write marks it dirty") {
-        constexpr std::array<std::byte, 4> data{static_cast<std::byte>(1)};
+        constexpr std::array<std::byte, 4> data{std::byte{1}};
 
         page.write(0, data);
 
@@ -27,8 +27,7 @@ TEST_CASE("Page can be written to and read from", "[page]") {
     }
 
     SECTION("data can be read back") {
-        constexpr std::array writeData{static_cast<std::byte>(1), static_cast<std::byte>(2),
-                                       static_cast<std::byte>(3), static_cast<std::byte>(4)};
+        constexpr std::array writeData{std::byte{1}, std::byte{2}, std::byte{3}, std::byte{4}};
 
         page.write(0, writeData);
         auto readData = page.read(0, writeData.size());
