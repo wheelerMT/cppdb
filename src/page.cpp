@@ -13,6 +13,6 @@ void Page::write(const std::size_t offset, std::span<const std::byte> data) {
     std::ranges::copy(data, data_.begin() + offset);
 }
 
-std::span<const std::byte> Page::read(const std::size_t offset, const std::size_t length) {
-    return std::span<const std::byte>{data_.begin() + offset, length};
+std::span<const std::byte> Page::read(const std::size_t offset, const std::size_t length) const {
+    return std::span{data_.begin() + offset, length};
 }
