@@ -19,7 +19,7 @@ TEST_CASE("Page can be written to and read from", "[page]") {
     Page page{0};
 
     SECTION("write marks it dirty") {
-        constexpr std::array<std::byte, 4> data{std::byte{1}};
+        constexpr std::array<std::byte, 4> data{};
 
         page.write(0, data);
 
