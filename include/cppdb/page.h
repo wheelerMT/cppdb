@@ -1,5 +1,5 @@
-#ifndef CPPDB_PAGE_H
-#define CPPDB_PAGE_H
+#pragma once
+
 #include <cstddef>
 #include <cstdint>
 
@@ -14,4 +14,3 @@ class Page {
     std::uint32_t pageId_;
     bool isDirty_{false};
 };
-#endif // CPPDB_PAGE_H
