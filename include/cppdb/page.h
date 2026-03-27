@@ -2,6 +2,7 @@
 
 #include <cstddef>
 #include <cstdint>
+#include <span>
 
 class Page {
   public:
@@ -9,6 +10,7 @@ class Page {
     explicit Page(std::uint32_t pageId);
     [[nodiscard]] static constexpr std::size_t size() { return PAGE_SIZE; }
     [[nodiscard]] bool isDirty() const;
+    void write(std::size_t offset, std::span<const std::byte> data);
 
   private:
     std::uint32_t pageId_;

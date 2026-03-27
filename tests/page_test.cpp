@@ -10,3 +10,12 @@ TEST_CASE("Page correctly reports its non-dirty", "[page]") {
     const Page page{0};
     REQUIRE(page.isDirty() == false);
 }
+
+TEST_CASE("Writing to a Page marks it dirty", "[page]") {
+    constexpr std::array<std::byte, 4> data{static_cast<std::byte>(1)};
+
+    Page page{0};
+    page.write(0, data);
+
+    REQUIRE(page.isDirty() == true);
+}
