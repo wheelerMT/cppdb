@@ -8,7 +8,7 @@ TEST_CASE("Page reports correct size", "[page]") {
 
 TEST_CASE("Page correctly reports its non-dirty", "[page]") {
     const Page page{0};
-    REQUIRE(page.isDirty() == false);
+    REQUIRE_FALSE(page.isDirty());
 }
 
 TEST_CASE("Writing to a Page marks it dirty", "[page]") {
@@ -17,5 +17,5 @@ TEST_CASE("Writing to a Page marks it dirty", "[page]") {
     Page page{0};
     page.write(0, data);
 
-    REQUIRE(page.isDirty() == true);
+    REQUIRE(page.isDirty());
 }
