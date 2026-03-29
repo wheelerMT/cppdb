@@ -53,4 +53,14 @@ TEST_CASE("Page can be written to and read from", "[page]") {
         REQUIRE(std::ranges::equal(initialData, initialReadData.value()));
         REQUIRE(std::ranges::equal(offsetData, offsetReadData.value()));
     }
+
+    SECTION("data written out of bounds is correctly reported") {
+        const auto result = page.write(Page::PAGE_SIZE + 1, {});
+        REQUIRE_FALSE(result);
+    }
+
+    SECTION("data read out of bounds is correctly reported") {
+        const auto result = page.read(Page::PAGE_SIZE + 1, 0);
+        REQUIRE_FALSE(result);
+    }
 }
