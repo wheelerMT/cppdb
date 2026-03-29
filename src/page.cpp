@@ -1,7 +1,6 @@
 #include "cppdb/page.h"
 
 #include <algorithm>
-#include <string>
 
 Page::Page(const std::uint32_t pageId) : pageId_(pageId) {}
 

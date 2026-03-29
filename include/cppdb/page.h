@@ -5,6 +5,7 @@
 #include <cstdint>
 #include <expected>
 #include <span>
+#include <string>
 
 class Page {
   public:
