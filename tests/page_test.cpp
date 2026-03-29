@@ -84,4 +84,13 @@ TEST_CASE("Page can be written to and read from", "[page]") {
 
         REQUIRE(std::ranges::equal(rawData, writeData));
     }
+
+    SECTION("loading data marks page as clean") {
+        std::array<std::byte, Page::PAGE_SIZE> writeData{};
+        std::ranges::fill(writeData, std::byte{1});
+        auto result = page.loadData(writeData);
+        REQUIRE(result.has_value());
+        
+        REQUIRE_FALSE(page.isDirty());
+    }
 }
