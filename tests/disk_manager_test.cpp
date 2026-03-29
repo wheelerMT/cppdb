@@ -5,12 +5,11 @@
 
 struct DiskManagerFixture {
     std::filesystem::path testFilePath{std::filesystem::temp_directory_path() / "test.cppdb"};
-
+    DiskManager manager = *DiskManager::open(testFilePath);
     ~DiskManagerFixture() { std::filesystem::remove(testFilePath); }
 };
 
 TEST_CASE_METHOD(DiskManagerFixture, "DiskManager can be created", "[disk_manager]") {
-    const DiskManager manager{testFilePath};
 
     SECTION("file exists after creation") {
         REQUIRE(std::filesystem::exists(testFilePath));

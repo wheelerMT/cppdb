@@ -2,16 +2,26 @@
 
 #include "cppdb/page.h"
 
-DiskManager::DiskManager(const std::filesystem::path& path) {
+std::expected<DiskManager, std::string> DiskManager::open(const std::filesystem::path& path) {
+    std::fstream file;
     if (std::filesystem::exists(path)) {
-        file_.open(path, std::ios::binary | std::ios::in | std::ios::out);
+        file.open(path, std::ios::binary | std::ios::in | std::ios::out);
     } else {
-        file_.open(path, std::ios::binary | std::ios::in | std::ios::out | std::ios::trunc);
+        file.open(path, std::ios::binary | std::ios::in | std::ios::out | std::ios::trunc);
+    }
+    if (!file.is_open()) {
+        return std::unexpected(std::string{"Unable to open file"});
     }
 
-    pageCount_ = std::filesystem::file_size(path) / Page::PAGE_SIZE;
+    const auto pageCount = std::filesystem::file_size(path) / Page::PAGE_SIZE;
+
+    return DiskManager(std::move(file), pageCount);
 }
 
 std::size_t DiskManager::pageCount() const {
     return pageCount_;
 }
+
+DiskManager::DiskManager(std::fstream file, std::size_t pageCount)
+    : file_(std::move(file)),
+      pageCount_(pageCount) {}

@@ -1,13 +1,16 @@
 #pragma once
+#include <cstddef>
+#include <expected>
 #include <filesystem>
 #include <fstream>
 
 class DiskManager {
   public:
-    explicit DiskManager(const std::filesystem::path& path);
+    static std::expected<DiskManager, std::string> open(const std::filesystem::path& path);
     [[nodiscard]] std::size_t pageCount() const;
 
   private:
+    explicit DiskManager(std::fstream file, std::size_t pageCount);
     std::fstream file_;
     std::size_t pageCount_{};
 };
