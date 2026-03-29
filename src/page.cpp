@@ -29,3 +29,7 @@ std::expected<std::span<const std::byte>, std::string> Page::read(const std::siz
 
     return std::span{data_.begin() + offset, length};
 }
+
+std::span<const std::byte> Page::rawData() const {
+    return std::span{data_.begin(), data_.end()};
+}

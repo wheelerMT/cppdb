@@ -63,4 +63,14 @@ TEST_CASE("Page can be written to and read from", "[page]") {
         const auto result = page.read(Page::PAGE_SIZE + 1, 0);
         REQUIRE_FALSE(result);
     }
+
+    SECTION("full data can be read", "[page]") {
+        std::array<std::byte, Page::PAGE_SIZE> writeData{};
+        std::ranges::fill(writeData, std::byte{1});
+        auto success = page.write(0, writeData);
+        REQUIRE(success.has_value());
+
+        auto rawData = page.rawData();
+        REQUIRE(std::ranges::equal(rawData, writeData));
+    }
 }
