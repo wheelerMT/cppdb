@@ -9,9 +9,14 @@ struct DiskManagerFixture {
     ~DiskManagerFixture() { std::filesystem::remove(testFilePath); }
 };
 
-TEST_CASE_METHOD(DiskManagerFixture, "DiskManager can be created with a new file path",
-                 "[disk_manager]") {
-    DiskManager manager{testFilePath};
+TEST_CASE_METHOD(DiskManagerFixture, "DiskManager can be created", "[disk_manager]") {
+    const DiskManager manager{testFilePath};
 
-    REQUIRE(std::filesystem::exists(testFilePath));
+    SECTION("file exists after creation") {
+        REQUIRE(std::filesystem::exists(testFilePath));
+    }
+
+    SECTION("page count is zero for a new file") {
+        REQUIRE(manager.pageCount() == 0);
+    }
 }

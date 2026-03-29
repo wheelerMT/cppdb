@@ -11,3 +11,7 @@ DiskManager::DiskManager(const std::filesystem::path& path) {
 
     pageCount_ = std::filesystem::file_size(path) / Page::PAGE_SIZE;
 }
+
+std::size_t DiskManager::pageCount() const {
+    return pageCount_;
+}

@@ -5,6 +5,7 @@
 class DiskManager {
   public:
     explicit DiskManager(const std::filesystem::path& path);
+    [[nodiscard]] std::size_t pageCount() const;
 
   private:
     std::fstream file_;
