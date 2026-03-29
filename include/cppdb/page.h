@@ -17,6 +17,7 @@ class Page {
     [[nodiscard]] std::expected<std::span<const std::byte>, std::string>
     read(std::size_t offset, std::size_t length) const;
     [[nodiscard]] std::span<const std::byte> rawData() const;
+    std::expected<void, std::string> loadData(std::span<const std::byte> bytes);
 
   private:
     std::uint32_t pageId_;

@@ -2,6 +2,8 @@
 
 #include <algorithm>
 
+using std::string_literals::operator""s;
+
 Page::Page(const std::uint32_t pageId) : pageId_(pageId) {}
 
 bool Page::isDirty() const {
@@ -32,4 +34,15 @@ std::expected<std::span<const std::byte>, std::string> Page::read(const std::siz
 
 std::span<const std::byte> Page::rawData() const {
     return std::span{data_.begin(), data_.end()};
+}
+
+std::expected<void, std::string> Page::loadData(std::span<const std::byte> bytes) {
+    if (bytes.size() != PAGE_SIZE) {
+        return std::unexpected("Bytes do not match page size of 4096"s);
+    }
+
+    std::ranges::copy(bytes, data_.begin());
+    isDirty_ = false;
+
+    return {};
 }

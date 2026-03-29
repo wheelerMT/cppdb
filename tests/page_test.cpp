@@ -73,4 +73,15 @@ TEST_CASE("Page can be written to and read from", "[page]") {
         auto rawData = page.rawData();
         REQUIRE(std::ranges::equal(rawData, writeData));
     }
+
+    SECTION("loading data correctly sets the underlying raw data", "[page]") {
+        std::array<std::byte, Page::PAGE_SIZE> writeData{};
+        std::ranges::fill(writeData, std::byte{1});
+
+        auto result = page.loadData(writeData);
+        REQUIRE(result.has_value());
+        auto rawData = page.rawData();
+
+        REQUIRE(std::ranges::equal(rawData, writeData));
+    }
 }
