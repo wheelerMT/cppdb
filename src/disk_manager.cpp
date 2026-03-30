@@ -22,6 +22,25 @@ std::size_t DiskManager::pageCount() const {
     return pageCount_;
 }
 
+std::expected<std::size_t, std::string> DiskManager::allocatePage() {
+    constexpr std::array<std::byte, Page::PAGE_SIZE> data{};
+    const auto pageId = pageCount_;
+
+    // Seek to the write position
+    file_.seekp(static_cast<std::streamoff>(pageId) * static_cast<std::streamoff>(Page::PAGE_SIZE));
+
+    // Write to the file
+    file_.write(reinterpret_cast<const char*>(data.data()), Page::PAGE_SIZE);
+
+    // Check for write error
+    if (file_.fail()) {
+        return std::unexpected("failed to write page");
+    }
+
+    pageCount_++;
+    return pageId;
+}
+
 DiskManager::DiskManager(std::fstream file, std::size_t pageCount)
     : file_(std::move(file)),
       pageCount_(pageCount) {}

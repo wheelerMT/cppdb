@@ -19,3 +19,18 @@ TEST_CASE_METHOD(DiskManagerFixture, "DiskManager can be created", "[disk_manage
         REQUIRE(manager.pageCount() == 0);
     }
 }
+
+TEST_CASE_METHOD(DiskManagerFixture, "DiskManager allocation", "[disk_manager]") {
+
+    SECTION("allocatePage returns ID 0 for the first page") {
+        const auto result = manager.allocatePage();
+        REQUIRE(result.has_value());
+        REQUIRE(result.value() == 0);
+    }
+
+    SECTION("pageCount returns 1 after first allocation") {
+        auto result = manager.allocatePage();
+        REQUIRE(result.has_value());
+        REQUIRE(manager.pageCount() == 1);
+    }
+}
