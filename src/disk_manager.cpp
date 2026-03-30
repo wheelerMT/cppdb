@@ -18,11 +18,11 @@ std::expected<DiskManager, std::string> DiskManager::open(const std::filesystem:
     return DiskManager(std::move(file), pageCount);
 }
 
-std::size_t DiskManager::pageCount() const {
+std::uint32_t DiskManager::pageCount() const {
     return pageCount_;
 }
 
-std::expected<std::size_t, std::string> DiskManager::allocatePage() {
+std::expected<std::uint32_t, std::string> DiskManager::allocatePage() {
     constexpr std::array<std::byte, Page::PAGE_SIZE> data{};
     const auto pageId = pageCount_;
 
@@ -41,6 +41,6 @@ std::expected<std::size_t, std::string> DiskManager::allocatePage() {
     return pageId;
 }
 
-DiskManager::DiskManager(std::fstream file, std::size_t pageCount)
+DiskManager::DiskManager(std::fstream file, std::uint32_t pageCount)
     : file_(std::move(file)),
       pageCount_(pageCount) {}
