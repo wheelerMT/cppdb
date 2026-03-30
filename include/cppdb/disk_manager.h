@@ -8,9 +8,10 @@ class DiskManager {
   public:
     static std::expected<DiskManager, std::string> open(const std::filesystem::path& path);
     [[nodiscard]] std::size_t pageCount() const;
+    [[nodiscard]] std::size_t allocatePage();
 
   private:
     explicit DiskManager(std::fstream file, std::size_t pageCount);
     std::fstream file_;
-    std::size_t pageCount_{};
+    std::uint32_t pageCount_{};
 };
