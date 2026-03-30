@@ -1,4 +1,5 @@
 #include "cppdb/disk_manager.h"
+#include "cppdb/page.h"
 
 #include <catch2/catch_test_macros.hpp>
 #include <filesystem>
@@ -46,4 +47,18 @@ TEST_CASE_METHOD(DiskManagerFixture, "DiskManager persists page count", "[disk_m
     // Reopen the same file
     auto reopened = *DiskManager::open(testFilePath);
     REQUIRE(reopened.pageCount() == 2);
+}
+
+TEST_CASE_METHOD(DiskManagerFixture, "DiskManager can write a page", "[disk_manager]") {
+    const auto result = manager.allocatePage();
+    REQUIRE(result.has_value());
+    const auto pageId = result.value();
+
+    Page page{pageId};
+    constexpr std::array writeData{std::byte{1}, std::byte{2}, std::byte{3}, std::byte{4}};
+    const auto writeResult = page.write(0, writeData);
+    REQUIRE(writeResult.has_value());
+
+    auto diskWriteResult = manager.writePage(pageId, page);
+    REQUIRE(diskWriteResult.has_value());
 }

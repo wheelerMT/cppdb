@@ -37,9 +37,26 @@ std::expected<std::uint32_t, std::string> DiskManager::allocatePage() {
         return std::unexpected("failed to write page");
     }
     file_.flush();
-    
+
     pageCount_++;
     return pageId;
+}
+
+std::expected<void, std::string> DiskManager::writePage(const std::uint32_t pageId,
+                                                        const Page& page) {
+    if (pageId >= pageCount_) {
+        return std::unexpected("page ID out of range");
+    }
+
+    file_.seekp(static_cast<std::streamoff>(pageId) * static_cast<std::streamoff>(Page::PAGE_SIZE));
+    file_.write(reinterpret_cast<const char*>(page.rawData().data()), Page::size());
+
+    if (file_.fail()) {
+        return std::unexpected("failed to write page");
+    }
+    file_.flush();
+
+    return {};
 }
 
 DiskManager::DiskManager(std::fstream file, std::uint32_t pageCount)
