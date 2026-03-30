@@ -34,3 +34,15 @@ TEST_CASE_METHOD(DiskManagerFixture, "DiskManager allocation", "[disk_manager]")
         REQUIRE(manager.pageCount() == 1);
     }
 }
+
+TEST_CASE_METHOD(DiskManagerFixture, "DiskManager persists page count", "[disk_manager]") {
+    {
+        auto manager = *DiskManager::open(testFilePath);
+        auto result = manager.allocatePage();
+        result = manager.allocatePage();
+    } // manager destroyed here -- file is closed and flushed
+
+    // Reopen the same file
+    auto reopened = *DiskManager::open(testFilePath);
+    REQUIRE(reopened.pageCount() == 2);
+}
