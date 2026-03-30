@@ -51,6 +51,25 @@ std::expected<void, std::string> DiskManager::writePage(const std::uint32_t page
     return {};
 }
 
+std::expected<void, std::string> DiskManager::readPage(const std::uint32_t pageId, Page& page) {
+    if (pageId >= pageCount_) {
+        return std::unexpected("page ID out of range");
+    }
+
+    file_.seekg(static_cast<std::streamoff>(pageId) * static_cast<std::streamoff>(Page::PAGE_SIZE));
+    std::array<std::byte, Page::PAGE_SIZE> buffer{};
+    file_.read(reinterpret_cast<char*>(buffer.data()), Page::PAGE_SIZE);
+
+    if (file_.fail()) {
+        return std::unexpected("failed to read page");
+    }
+
+    if (const auto result = page.loadData(buffer); !result.has_value()) {
+        return std::unexpected("failed to load data into page");
+    }
+    return {};
+}
+
 DiskManager::DiskManager(std::fstream file, std::uint32_t pageCount)
     : file_(std::move(file)),
       pageCount_(pageCount) {}

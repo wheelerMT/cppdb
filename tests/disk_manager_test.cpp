@@ -1,6 +1,7 @@
 #include "cppdb/disk_manager.h"
 #include "cppdb/page.h"
 
+#include <algorithm>
 #include <catch2/catch_test_macros.hpp>
 #include <filesystem>
 
@@ -62,5 +63,15 @@ TEST_CASE_METHOD(DiskManagerFixture, "DiskManager can read and write a page", "[
     SECTION("can write a page successfully") {
         auto diskWriteResult = manager.writePage(pageId, page);
         REQUIRE(diskWriteResult.has_value());
+    }
+
+    SECTION("can read a page successfully") {
+        auto diskWriteResult = manager.writePage(pageId, page);
+        REQUIRE(diskWriteResult.has_value());
+
+        Page newPage{1};
+        auto diskReadResult = manager.readPage(pageId, newPage);
+        REQUIRE(diskReadResult.has_value());
+        REQUIRE(std::ranges::equal(page.rawData(), newPage.rawData()));
     }
 }
