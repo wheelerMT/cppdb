@@ -36,7 +36,8 @@ std::expected<std::uint32_t, std::string> DiskManager::allocatePage() {
     if (file_.fail()) {
         return std::unexpected("failed to write page");
     }
-
+    file_.flush();
+    
     pageCount_++;
     return pageId;
 }
