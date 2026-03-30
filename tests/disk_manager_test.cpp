@@ -49,7 +49,7 @@ TEST_CASE_METHOD(DiskManagerFixture, "DiskManager persists page count", "[disk_m
     REQUIRE(reopened.pageCount() == 2);
 }
 
-TEST_CASE_METHOD(DiskManagerFixture, "DiskManager can write a page", "[disk_manager]") {
+TEST_CASE_METHOD(DiskManagerFixture, "DiskManager can read and write a page", "[disk_manager]") {
     const auto result = manager.allocatePage();
     REQUIRE(result.has_value());
     const auto pageId = result.value();
@@ -59,6 +59,8 @@ TEST_CASE_METHOD(DiskManagerFixture, "DiskManager can write a page", "[disk_mana
     const auto writeResult = page.write(0, writeData);
     REQUIRE(writeResult.has_value());
 
-    auto diskWriteResult = manager.writePage(pageId, page);
-    REQUIRE(diskWriteResult.has_value());
+    SECTION("can write a page successfully") {
+        auto diskWriteResult = manager.writePage(pageId, page);
+        REQUIRE(diskWriteResult.has_value());
+    }
 }
