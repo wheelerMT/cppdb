@@ -15,7 +15,7 @@ std::expected<DiskManager, std::string> DiskManager::open(const std::filesystem:
 
     const auto pageCount = std::filesystem::file_size(path) / Page::PAGE_SIZE;
 
-    return DiskManager(std::move(file), pageCount);
+    return DiskManager(std::move(file), static_cast<std::uint32_t>(pageCount));
 }
 
 std::uint32_t DiskManager::pageCount() const {
