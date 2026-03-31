@@ -19,4 +19,5 @@ class DiskManager {
     explicit DiskManager(std::fstream file, std::uint32_t pageCount);
     std::fstream file_;
     std::uint32_t pageCount_{};
+    std::expected<void, std::string> writePageToFile(std::uint32_t pageId, const Page& page);
 };
