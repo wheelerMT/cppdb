@@ -74,4 +74,18 @@ TEST_CASE_METHOD(DiskManagerFixture, "DiskManager can read and write a page", "[
         REQUIRE(diskReadResult.has_value());
         REQUIRE(std::ranges::equal(page.rawData(), newPage.rawData()));
     }
+
+    SECTION("persistence round-trip") {
+        {
+            auto diskWriteResult = manager.writePage(pageId, page);
+            REQUIRE(diskWriteResult.has_value());
+        } // DiskManager goes out of scope and closes here
+
+        // Reopen the same file
+        auto reopened = *DiskManager::open(testFilePath);
+        Page newPage{1};
+        auto diskReadResult = reopened.readPage(pageId, newPage);
+        REQUIRE(diskReadResult.has_value());
+        REQUIRE(std::ranges::equal(page.rawData(), newPage.rawData()));
+    }
 }
