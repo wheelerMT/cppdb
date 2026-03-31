@@ -69,7 +69,7 @@ TEST_CASE_METHOD(DiskManagerFixture, "DiskManager can read and write a page", "[
         auto diskWriteResult = manager.writePage(pageId, page);
         REQUIRE(diskWriteResult.has_value());
 
-        Page newPage{1};
+        Page newPage{pageId};
         auto diskReadResult = manager.readPage(pageId, newPage);
         REQUIRE(diskReadResult.has_value());
         REQUIRE(std::ranges::equal(page.rawData(), newPage.rawData()));
@@ -83,7 +83,7 @@ TEST_CASE_METHOD(DiskManagerFixture, "DiskManager can read and write a page", "[
 
         // Reopen the same file
         auto reopened = *DiskManager::open(testFilePath);
-        Page newPage{1};
+        Page newPage{pageId};
         auto diskReadResult = reopened.readPage(pageId, newPage);
         REQUIRE(diskReadResult.has_value());
         REQUIRE(std::ranges::equal(page.rawData(), newPage.rawData()));
