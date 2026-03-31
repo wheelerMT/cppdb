@@ -43,7 +43,7 @@ TEST_CASE_METHOD(DiskManagerFixture, "DiskManager persists page count", "[disk_m
         REQUIRE(result.has_value());
         result = manager.allocatePage();
         REQUIRE(result.has_value());
-    } // manager destroyed here -- file is closed and flushed
+    }
 
     // Reopen the same file
     auto reopened = *DiskManager::open(testFilePath);
@@ -79,7 +79,7 @@ TEST_CASE_METHOD(DiskManagerFixture, "DiskManager can read and write a page", "[
         {
             auto diskWriteResult = manager.writePage(pageId, page);
             REQUIRE(diskWriteResult.has_value());
-        } // DiskManager goes out of scope and closes here
+        }
 
         // Reopen the same file
         auto reopened = *DiskManager::open(testFilePath);
