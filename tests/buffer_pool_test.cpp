@@ -14,3 +14,14 @@ TEST_CASE_METHOD(DiskManagerFixture, "buffer pool is created correctly", "[buffe
     const BufferPool pool{std::move(manager), numFrames};
     REQUIRE(pool.numFrames() == numFrames);
 }
+
+TEST_CASE_METHOD(DiskManagerFixture, "buffer pool returns a valid page pointer and ID",
+                 "[buffer_pool]") {
+    constexpr std::size_t numFrames = 512;
+    BufferPool pool{std::move(manager), numFrames};
+
+    auto result = pool.newPage();
+    REQUIRE(result.has_value());
+    REQUIRE(result->page != nullptr);
+    REQUIRE(result->pageId == 0);
+}
