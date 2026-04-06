@@ -25,6 +25,7 @@ class BufferPool {
     BufferPool(DiskManager&& manager, std::size_t numFrames);
     [[nodiscard]] std::size_t numFrames() const;
     [[nodiscard]] std::expected<PageHandle, std::string> newPage();
+    [[nodiscard]] std::expected<PageHandle, std::string> fetchPage(std::uint32_t pageId);
 
   private:
     DiskManager manager_;

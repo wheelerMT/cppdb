@@ -25,3 +25,16 @@ TEST_CASE_METHOD(DiskManagerFixture, "buffer pool returns a valid page pointer a
     REQUIRE(result->page != nullptr);
     REQUIRE(result->pageId == 0);
 }
+
+TEST_CASE_METHOD(DiskManagerFixture, "buffer pool fetches a page already in cache",
+                 "[buffer_pool]") {
+    constexpr std::size_t numFrames = 512;
+    BufferPool pool{std::move(manager), numFrames};
+    auto result = pool.newPage();
+    REQUIRE(result.has_value());
+    const auto firstPage = result.value();
+
+    auto fetchResult = pool.fetchPage(firstPage.pageId);
+    REQUIRE(fetchResult.has_value());
+    REQUIRE(fetchResult.value().pageId == firstPage.pageId);
+}

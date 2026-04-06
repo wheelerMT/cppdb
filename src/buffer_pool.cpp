@@ -36,3 +36,12 @@ std::expected<PageHandle, std::string> BufferPool::newPage() {
 
     return PageHandle{&iter->page, pageId};
 }
+
+std::expected<PageHandle, std::string> BufferPool::fetchPage(std::uint32_t pageId) {
+    if (pageTable_.contains(pageId)) {
+        const auto index = pageTable_[pageId];
+        return PageHandle(&frames_.at(index).page, pageId);
+    }
+
+    // Page does not exist, first create it
+}
