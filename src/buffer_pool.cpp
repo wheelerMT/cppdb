@@ -38,10 +38,29 @@ std::expected<PageHandle, std::string> BufferPool::newPage() {
 }
 
 std::expected<PageHandle, std::string> BufferPool::fetchPage(std::uint32_t pageId) {
+    // Cache hit
     if (pageTable_.contains(pageId)) {
         const auto index = pageTable_[pageId];
         return PageHandle(&frames_.at(index).page, pageId);
     }
 
-    // Page does not exist, first create it
+    // Otherwise, get the page from disk
+    const auto iter =
+        std::ranges::find_if(frames_, [](const Frame& frame) { return !frame.isOccupied; });
+    if (iter == frames_.end()) {
+        return std::unexpected("buffer pool is full");
+    }
+
+    if (const auto result = manager_.readPage(pageId, iter->page); !result.has_value()) {
+        return std::unexpected(result.error());
+    }
+
+    // Update frame metadata
+    iter->isOccupied = true;
+    iter->pageId = pageId;
+    iter->pinCount = 1;
+    const auto frameIndex = static_cast<std::size_t>(std::distance(frames_.begin(), iter));
+    pageTable_[pageId] = frameIndex;
+
+    return PageHandle{&iter->page, pageId};
 }
